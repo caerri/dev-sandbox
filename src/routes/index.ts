@@ -3,7 +3,35 @@ import { Sandbox } from '../types';
 
 const router = Router();
 
-// Sample sandbox data (later we'll get this from a database)
+function renderTemplate(data: { name: string; description: string; sandboxes: Sandbox[] }) {
+  const sandboxHtml = data.sandboxes.map(sandbox => `
+    <div class="sandbox">
+      <div class="status">${sandbox.status}</div>
+      <h3>${sandbox.name}</h3>
+      <p>${sandbox.description}</p>
+      <span class="technology">${sandbox.technology}</span>
+    </div>`).join('');
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Developer Hub - ${data.name}</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="header">
+    <h1>${data.name}</h1>
+    <p class="description">${data.description}</p>
+  </div>
+  <div class="sandboxes">
+    ${sandboxHtml}
+  </div>
+</body>
+</html>`;
+}
+
 const sandboxes: Sandbox[] = [
   {
     id: '1',
@@ -31,14 +59,14 @@ const sandboxes: Sandbox[] = [
   }
 ];
 
-// Homepage route
 router.get('/', (req, res) => {
-  res.json({
+  const html = renderTemplate({
     name: 'Carrie Snow',
-    title: 'Developer Hub',
     description: 'Learning multiple technology stacks',
     sandboxes: sandboxes
   });
+  
+  res.send(html);
 });
 
 // Get all sandboxes
