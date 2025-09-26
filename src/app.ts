@@ -4,6 +4,7 @@ import helmet from 'helmet';
 import cors from 'cors';
 import morgan from 'morgan';
 import path from 'path';
+import routes from './routes';
 
 // Create Express application
 const app = express();
@@ -25,20 +26,10 @@ app.use(express.urlencoded({ extended: true }));
 // Serve static files from public directory
 app.use(express.static(path.join(__dirname, '../public')));
 
-// Basic route - your homepage
-app.get('/', (req, res) => {
-  res.send(`
-    <h1>Carrie Snow</h1>
-    <p>Sandboxes</p>
-    <ul>
-      <li><a href="/django">Django Sandbox</a></li>
-      <li><a href="/rails">Ruby on Rails Sandbox</a></li>
-      <li><a href="/kotlin">Kotlin Sandbox</a></li>
-    </ul>
-  `);
-});
+// Routes
+app.use('/', routes);
 
 // Start the server
 app.listen(PORT, () => {
-  console.log(`dev-hub running on http://localhost:${PORT}`);
+  console.log(`dev Hub running on http://localhost:${PORT}`);
 });
